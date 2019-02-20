@@ -1,12 +1,11 @@
 #!/bin/bash -xe
 
 sudo yum install ruby ntp wget java-1.8.0-openjdk-devel -y
-# 2. create a tomcat user :: 
-# member of the tomcat group, home directory of /opt/tomcat (install), shell of /bin/false (nobody login)
+# Create a tomcat user :: 
+# Member of the tomcat group, home directory of /opt/tomcat (install), shell of /bin/false (nobody login)
 sudo groupadd tomcat
 sudo useradd -M -s /sbin/nologin -g tomcat -d /opt/tomcat tomcat
 
-# B | installation 
 cd ~
 mkdir development
 wget http://apache.mirrors.pair.com/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz
@@ -45,9 +44,8 @@ echo 'RestartSec=10' >> tomcat.service
 echo 'Restart=always' >> tomcat.service
 echo '[Install]' >> tomcat.service
 echo 'WantedBy=multi-user.target' >> tomcat.service
-# paste the content of tomcat.service [https://gist.github.com/ryanpadilha/a7cb7a31bdbea05fdef3ab3716ca0c9c]
 sudo mv tomcat.service /usr/lib/systemd/system/tomcat.service
-# reload Systemd to load the tomcat unit file
+
 sudo systemctl daemon-reload
 
 # start tomcat service
@@ -55,27 +53,22 @@ sudo systemctl enable tomcat.service
 sudo systemctl start tomcat.service
 sudo systemctl status tomcat
 
-# enable the tomcat service start on server boot (optional)
+sudo yum install zip unzip -y
+wget https://services.gradle.org/distributions/gradle-5.0-bin.zip -P /tmp
 
-# Created symlink from /etc/systemd/system/multi-user.target.wants/tomcat.service to /etc/systemd/system/tomcat.service.
+sudo mkdir -p /opt/gradle/
+sudo unzip -d /opt/gradle /tmp/gradle-5.0-bin.zip
 
-# change de port of tomcat webserver in conflicts
-# search for <Connector port="8080" ...
-#sudo vim /opt/tomcat/conf/server.xml
+cd ~
+touch gradle.sh
+echo 'export GRADLE_HOME=/opt/gradle/gradle-5.0' > gradle.sh
+echo 'export PATH=${GRADLE_HOME}/bin:${PATH}' >> gradle.sh
+sudo chmod +x gradle.sh
+sudo mv gradle.sh /etc/profile.d/gradle.sh
 
-# E | tomcat web management interface
-# edit tomcat-users.xml file
-#sudo vim /opt/tomcat/conf/tomcat-users.xml
+source /etc/profile.d/gradle.sh
+gradle -v
 
-# add line <user username="admin" password="password" roles="manager-gui,admin-gui"/>
-# remove restrict access to the tomcat manager :: comment ip address (loopback)
-# 1. manager app
-#sudo vim /opt/tomcat/webapps/manager/META-INF/context.xml
-
-# 2. host-manager app
-#sudo vi /opt/tomcat/webapps/host-manager/META-INF/context.xml
-
-# restart the service!
 sudo echo 'SUCCESS!!!!!!!'
-sudo find / -name "tomcat8"
+
 exit 0
