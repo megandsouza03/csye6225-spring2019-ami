@@ -34,7 +34,7 @@
     "provisioners": [
         {
             "type": "shell",
-            "script":"install-tomcat.sh"
+            "script":"install-apps.sh"
         }
     ]
 }
