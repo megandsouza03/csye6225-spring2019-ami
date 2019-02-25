@@ -6,8 +6,18 @@ sudo yum install ruby ntp wget java-1.8.0-openjdk-devel -y
 sudo groupadd tomcat
 sudo useradd -M -s /sbin/nologin -g tomcat -d /opt/tomcat tomcat
 
+# Moving to the user home folder
+cd /home/centos
+
+#install code-deployagent on the ec2 instance
+wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install
+chmod +x ./install
+sudo ./install auto
+
+#Check Service is running
+sudo service codedeploy-agent status
+
 cd ~
-mkdir development
 wget http://apache.mirrors.pair.com/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz
 
 # install tomcat to the /opt/tomcat directory
