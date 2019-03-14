@@ -20,7 +20,7 @@
             "ami_name": "csye6225_{{timestamp}}",
             "ami_description": "Centos7 AMI for CSYE 6225 - Spring 2019",
             "run_tags": {"Name": "packer_builder"},
-            "tags": {"Name": "centos_{{timestamp}}"},
+            "tags": {"Name": "centos_assignment4"},
             "launch_block_device_mappings": [
                 {
                     "device_name": "/dev/sda1",
