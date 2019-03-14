@@ -1,5 +1,5 @@
 #!/bin/bash -xe
-# sudo yum update -y
+sudo yum update -y
 sudo yum install ruby ntp wget java-1.8.0-openjdk-devel -y
 # Create a tomcat user :: 
 # Member of the tomcat group, home directory of /opt/tomcat (install), shell of /bin/false (nobody login)
