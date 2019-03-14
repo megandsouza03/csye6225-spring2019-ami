@@ -1,5 +1,5 @@
 #!/bin/bash -xe
-sudo yum update -y
+# sudo yum update -y
 sudo yum install ruby ntp wget java-1.8.0-openjdk-devel -y
 # Create a tomcat user :: 
 # Member of the tomcat group, home directory of /opt/tomcat (install), shell of /bin/false (nobody login)
@@ -18,11 +18,11 @@ sudo ./install auto
 sudo service codedeploy-agent status
 
 cd ~
-wget http://apache.mirrors.pair.com/tomcat/tomcat-8/v8.5.38/bin/apache-tomcat-8.5.38.tar.gz
+wget http://mirror.olnevhost.net/pub/apache/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
 
 # install tomcat to the /opt/tomcat directory
 sudo mkdir /opt/tomcat 
-sudo tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1
+sudo tar xvf apache-tomcat-9*tar.gz -C /opt/tomcat --strip-components=1
 cd /opt/tomcat
 sudo chgrp -R tomcat /opt/tomcat
 sudo chmod -R g+r conf
