@@ -18,7 +18,7 @@ sudo ./install auto
 sudo service codedeploy-agent status
 
 cd ~
-wget http://mirror.olnevhost.net/pub/apache/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
+wget http://archive.apache.org/dist/tomcat/tomcat-9/v9.0.16/bin/apache-tomcat-9.0.16.tar.gz
 
 # install tomcat to the /opt/tomcat directory
 sudo mkdir /opt/tomcat 
