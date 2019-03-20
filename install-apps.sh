@@ -79,6 +79,60 @@ sudo mv gradle.sh /etc/profile.d/gradle.sh
 source /etc/profile.d/gradle.sh
 gradle -v
 
+#Creating cloudwatch-config.json file
+cd ~
+touch cloudwatch-config.json
+
+cat > cloudwatch-config.json << EOF
+{
+    "agent": {
+        "metrics_collection_interval": 10,
+        "logfile": "/var/logs/amazon-cloudwatch-agent.log"
+    },
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/opt/tomcat/logs/csye6225.log",
+                        "log_group_name": "csye6225_spring2019",
+                        "log_stream_name": "webapp"
+                    }
+                ]
+            }
+        },
+        "log_stream_name": "cloudwatch_log_stream"
+    },
+    "metrics": {
+    	"metrics_collected": {
+    		"statsd":{
+    			"service_address": ":8125",
+    			"metrics_collection_interval":10,
+    			"metrics_aggregation_interval":0
+    		}
+    	}
+    }
+}
+EOF
+
+#Installing cloud-watch config agent
+cat cloudwatch-config.json
+sudo mv cloudwatch-config.json /opt/cloudwatch-config.json
+
+cd ~
+
+sudo wget https://s3.amazonaws.com/amazoncloudwatch-agent/centos/amd64/latest/amazon-cloudwatch-agent.rpm
+sudo rpm -U ./amazon-cloudwatch-agent.rpm
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/cloudwatch-config.json -s
+
+
+cd ~
+
+sudo wget https://s3.amazonaws.com/configfileforcloudwatch/amazon-cloudwatch-agent.service
+sudo cp amazon-cloudwatch-agent.service /usr/lib/systemd/system/
+sudo systemctl enable amazon-cloudwatch-agent.service
+sudo systemctl start amazon-cloudwatch-agent.service
+sudo systemctl status amazon-cloudwatch-agent.service
 sudo echo 'SUCCESS!!!!!!!'
 
 exit 0
