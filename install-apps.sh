@@ -115,6 +115,12 @@ cat > cloudwatch-config.json << EOF
 }
 EOF
 
+touch csye6225.log
+sudo chgrp -R tomcat csye6225.log
+sudo chmod -R g+r csye6225.log
+sudo chmod g+x csye6225.log
+sudo mv csye6225.log /opt/tomcat/logs/csye6225.log
+
 #Installing cloud-watch config agent
 cat cloudwatch-config.json
 sudo mv cloudwatch-config.json /opt/cloudwatch-config.json
